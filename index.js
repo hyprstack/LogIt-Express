@@ -38,8 +38,9 @@ app.get('/home', function(req, res){
 // get list of exercises form databse using a view
 function list_exercises(req, res){
   var q = {
-    limit: 5, // limite the results to 5 per page
-    stale: false
+    // limit: 5, // limite the results to 5 per page
+    stale: false,
+    descending: true
   };
 
   db.view('workout', 'exercise', q).query(function(err, values){
@@ -51,17 +52,27 @@ function list_exercises(req, res){
     console.log('Keys: ' + keys);
     // fetch multiple documents based on the 'keys' object
     db.getMulti( keys, null, function(err, results){
-      console.log('Results: ' + results);
+      // console.log('Results: ' + results);
+      // console.log(JSON.stringify(results, null, " "));
 
-      console.log(JSON.stringify(results, null, " "));
-      var exercises = JSON.stringify(results, null, " ");
+      var obj =[ ];
+      for (var prop in results) {
+        var usr = results[prop].value.personId;
 
-      res.send(exercises);
+        if(usr !== req.params.name) {
+          continue;
+        } else {
+          console.log(usr);
+          obj.push(results[prop].value);
+        }
+      }
+
+      res.send(obj);
 
     });
   });
 }
-app.get('/exercises', list_exercises);
+app.get('/exercises/:name', list_exercises);
 
 
 
