@@ -49,7 +49,8 @@ function list_multi_exercises(req, res){
     // 'exercise' view's map function emits personId as key
     // and value as 'date', 'exercise', 'musclegroup' and 'sets'
 
-    // use pluck method from underscore module to retrive data from couchbase
+    // use pluck method from underscore module to retrive data
+    // from couchbase
     var keys = _.pluck(values, 'id');
     // console.log('Keys: ' + keys);
 
@@ -84,7 +85,25 @@ app.get('/exercises/list/:user', list_multi_exercises);
 
 // create a new document
 
+//set a function that initiates the creation of a new workout doc.
+//we set a template for the new doc and render it
+function begin_create_workout(req, res){
+  var view = {is_create : true, workout: {
+    personId: '',
+    date: {"type" : "date", "default": "Date.now"},
+    muscleGroup: '',
+    exercise: '',
+    Sets: ''
+  } };
+  // use the addworkout view to render the page with the form.
+  res.render('addworkout', view);
+}
+// use a get call to fetch the form
+app.get('/createworkout', begin_create_workout);
 
+function done_create_workout(req, res){
+
+}
 
 // access a single document by exercise
 
