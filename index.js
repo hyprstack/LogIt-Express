@@ -27,11 +27,13 @@ app.set('view engine', 'jade');
 
 
 
+
 // define landing page
 app.get('/home', function(req, res){
   //use template 'lading.jade' from our views directory
   res.render('landing');
 });
+
 
 
 
@@ -42,7 +44,6 @@ function list_multi_exercises(req, res){
     stale: false,
     descending: true
   };
-
 
   // show multiple exercises
   db.view('workout', 'exercise', q).query(function(err, values){
@@ -83,14 +84,20 @@ app.get('/exercises/list/:user', list_multi_exercises);
 
 
 
+
 // create a new document
 
 //set a function that initiates the creation of a new workout doc.
 //we set a template for the new doc and render it
 function begin_create_workout(req, res){
-  var view = {is_create : true, workout: {
+
+  //automatically generates date.
+  var currDate = (new Date()).toString().split(' ').splice(1,3).join(' ');
+  // pass the is_create and workout parameter to the template
+  // is_create tells the template this is a new document
+  var view = { is_create : true, workout: {
     personId: '',
-    date: {"type" : "date", "default": "Date.now"},
+    date: currDate,
     muscleGroup: '',
     exercise: '',
     Sets: ''
@@ -102,8 +109,32 @@ function begin_create_workout(req, res){
 app.get('/createworkout', begin_create_workout);
 
 function done_create_workout(req, res){
+  // to do: must use the input data from the form as the val varibale to the add method
+  // must concatenate the values from personId and date as the ID of the newly created document
+    // var val = req.body;
+    // var key =
 
+    db.add(key, val, function(err, result){
+      if(err) {
+        throw err;
+      } else {
+        res.redirect('/workout/saved'); //define a view for this page
+      }
+    });
 }
+app.post('/createworkout', done_create_workout);
+
+
+
+
+// page displaying message document was created successfully
+app.get('/workout/saved', function(req, res){
+  //use template 'workoutSaved.jade' from our views directory
+  res.render('workoutSaved');
+});
+
+
+
 
 // access a single document by exercise
 
