@@ -2,17 +2,32 @@ if is_create
   h3 Create new workout
 
 form(method='post' action='')
-  fieldset
-    legend General Info
-    .span12
-      .span6
-        input(type='hidden' name='personId' value='#{workout.personId}')
-        label Date
-        input(type='text' name='date' value='#{workout.date}')
-        label Muscle Group
-        input(type='text' name='muscleGroup' value='#{workout.muscleGroup}')
-        label Exercise
-        input(type='text' name='exercise' value='#{workout.exercise}')
+  table
+    table
+      thead
+        tr
+          th Person Id
+          th Date
+      tbody
+        tr
+          td
+            input(type='text' name='personId' value='#{session.personId}')
+          td
+            input(type='text' name='date' value='#{session.date}')
+    table
+      caption Workout
+        thead
+          tr
+            th Muscle Group
+            th Exercise
+            th Sets
+        tbody
+          tr
+            td
+              input(type='text' name='muscleGroup' value='#{session.workout[0].muscleGroup}')
+            td
+              input(type='text' name='exercise' value='#{session.workout[0].exercise}')
+
 
   .form-actions
     button(type='submit' class='btn btn-primary') Save Workout

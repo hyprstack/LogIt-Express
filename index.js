@@ -93,31 +93,82 @@ function begin_create_workout(req, res){
 
   //automatically generates date.
   var currDate = (new Date()).toString().split(' ').splice(1,3).join(' ');
+
   // pass the is_create and workout parameter to the template
   // is_create tells the template this is a new document
-  var view = { is_create : true, workout: {
+  var view = { is_create : true, session: {
     personId: '',
     date: currDate,
-    muscleGroup: '',
-    exercise: '',
-    Sets: ''
-  } };
+    workout : [
+      {
+        muscleGroup: '',
+        exercise: '',
+        Sets: [
+          {
+            Reps: '',
+            Kg: ''
+          },
+          {
+            Reps: '',
+            Kg: ''
+          },
+          {
+            Reps: '',
+            Kg: ''
+          },
+          {
+            Reps: '',
+            Kg: ''
+          },
+          {
+            Reps: '',
+            Kg: ''
+          },
+          {
+            Reps: '',
+            Kg: ''
+          },
+          {
+            Reps: '',
+            Kg: ''
+          },
+          {
+            Reps: '',
+            Kg: ''
+          },
+          {
+            Reps: '',
+            Kg: ''
+          },
+          {
+            Reps: '',
+            Kg: ''
+          }
+        ]
+      }
+    ]
+  }
+};
   // use the addworkout view to render the page with the form.
   res.render('addworkout', view);
 }
 // use a get call to fetch the form
-app.get('/createworkout', begin_create_workout);
+app.get('/createworkout/', begin_create_workout);
 
 function done_create_workout(req, res){
   // to do: must use the input data from the form as the val varibale to the add method
   // must concatenate the values from personId and date as the ID of the newly created document
-    // var val = req.body;
-    // var key =
+
+    // req.body is undefined. Need to bring it in!
+    var val = req.body;
+    console.log(req.body);
+
+    var key = val.personId.value + '-' + val.date.value.replace(' ', '-').toLowerCase();
 
     db.add(key, val, function(err, result){
       if(err) {
         throw err;
-      } else {
+      } else if(result.statusCode === 200){
         res.redirect('/workout/saved'); //define a view for this page
       }
     });

@@ -122,3 +122,21 @@ Using CouchBase
 
 Couchbase has a good tutorial on how to connect with the database using the Node SDK.
 http://docs.couchbase.com/couchbase-sdk-node-1.2/#quickstart
+
+
+### Notes on development
+
+>From what I gathered Couchbase does not auto-generate document ID's, for which
+>it is left up to the developer to create the ID. This can be tricky. In this case
+>I was considering using the personId and the date to form a unique Doc. ID, but there is also the case
+>that the user might decide to workout twice a day, in which case it would be necessary to
+>have the option of updating an existing document and maintaining its current ID without overriding
+>already existing data.
+
+>Another issue I have run into is in the structure of each workout document.
+>It is necessary to have the document allow for the insertion of as many exercises as necessary per workout
+>without generating another document. How to have the application auto-generate new
+>exercise lines is another issue to look into.
+
+>I am currently having trouble with the done_create_workout function. I need to pass the values
+>of the body been sent to the database as to create the unique doc ID and also to have the doc posted to the database.  
